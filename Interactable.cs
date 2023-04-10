@@ -6,7 +6,7 @@ namespace OASIS
     public abstract class Interactable : MonoBehaviour
     {
         public bool isMouseOver { get; private set; }
-        public LayerMask layerMask = ~0;
+        public LayerMask layerMask = ~(1 << 2);
         public float maxInteractionDistance = 1;
 
         static Dictionary<int, RaycastHit> raycasts = new Dictionary<int, RaycastHit>();
