@@ -94,6 +94,8 @@ namespace OASIS
         }
         public Action<int> onAttach;
         public Action<int> onDetach;
+        public Func<bool> canAttach;
+        public Func<bool> canDetach;
         public Collider[] triggers;
         public Bolt[] bolts;
         public bool useCustomLayerMask;
@@ -102,7 +104,7 @@ namespace OASIS
 
         public override void mouseOver()
         {
-            if (attachedTo == -1) return;
+            if (attachedTo == -1 || (canDetach != null && !canDetach.Invoke())) return;
             if (bolts != null)
             {
                 for (var i = 0; i < bolts.Length; i++)
@@ -154,7 +156,7 @@ namespace OASIS
 
         public void LateUpdate()
         {
-            if (attachedTo != -1 || triggerIndex == -1) return;
+            if (attachedTo != -1 || triggerIndex == -1 || (canAttach != null && !canAttach.Invoke())) return;
 
             if (Input.GetMouseButtonDown(0))
             {
