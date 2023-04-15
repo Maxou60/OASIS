@@ -67,6 +67,8 @@ namespace OASIS
 
         public override void mouseExit() => tryResetMaterial();
 
+        public void OnDisable() => tryResetMaterial();
+
         public void Awake()
         {
             renderer = GetComponent<Renderer>();
