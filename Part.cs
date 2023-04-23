@@ -48,10 +48,10 @@ namespace OASIS
             get => _attachedTo;
             set
             {
+                if (value == _attachedTo) return;
+
                 if (value == -1)
                 {
-                    triggers[_attachedTo].enabled = true;
-                    _attachedTo = -1;
                     for (var i = 0; i < bolts.Length; i++)
                     {
                         bolts[i].gameObject.SetActive(false);
@@ -64,11 +64,11 @@ namespace OASIS
                     rigidbody = gameObject.AddComponent<Rigidbody>();
                     rigidbodyCache.applyTo(rigidbody);
                     rigidbodyCache = null;
+
+                    triggers[_attachedTo].enabled = true;
                 }
                 else
                 {
-                    triggers[value].enabled = false;
-                    _attachedTo = value;
                     for (var i = 0; i < bolts.Length; i++) bolts[i].gameObject.SetActive(true);
 
                     transform.SetParent(triggers[value].transform);
@@ -76,9 +76,17 @@ namespace OASIS
                     transform.localRotation = Quaternion.identity;
                     tag = "Untagged";
 
-                    rigidbodyCache = new RigidbodyCache(rigidbody);
-                    Destroy(rigidbody);
+                    if (_attachedTo == -1)
+                    {
+                        rigidbodyCache = new RigidbodyCache(rigidbody);
+                        Destroy(rigidbody);
+                    }
+                    else triggers[_attachedTo].enabled = true;
+
+                    triggers[value].enabled = false;
                 }
+
+                _attachedTo = value;
             }
         }
         public int tightness
