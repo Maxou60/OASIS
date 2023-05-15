@@ -22,7 +22,7 @@ namespace OASIS
 
         public void Update()
         {
-            if (raycast(out var hit) && hit.collider.gameObject == gameObject)
+            if (raycast(out var hit, maxInteractionDistance, layerMask) && hit.collider.gameObject == gameObject)
             {
                 if (!isMouseOver)
                 {
@@ -38,7 +38,7 @@ namespace OASIS
             }
         }
 
-        bool raycast(out RaycastHit hit)
+        public static bool raycast(out RaycastHit hit, float distance, int layerMask)
         {
             if (Time.frameCount != lastFrame)
             {
@@ -57,20 +57,20 @@ namespace OASIS
 
             if (raycasts.TryGetValue(layerMask, out var cache))
             {
-                if (cache.collider || cache.distance >= maxInteractionDistance)
+                if (cache.collider || cache.distance >= distance)
                 {
                     hit = cache;
-                    return cache.distance <= maxInteractionDistance;
+                    return cache.distance <= distance;
                 }
 
-                Physics.Raycast(ray.origin + ray.direction * cache.distance, ray.direction, out hit, maxInteractionDistance - cache.distance, layerMask);
+                Physics.Raycast(ray.origin + ray.direction * cache.distance, ray.direction, out hit, distance - cache.distance, layerMask);
                 hit.distance += cache.distance;
                 raycasts[layerMask] = hit;
                 return hit.collider;
             }
             else
             {
-                Physics.Raycast(ray, out hit, maxInteractionDistance, layerMask);
+                Physics.Raycast(ray, out hit, distance, layerMask);
                 raycasts.Add(layerMask, hit);
                 return hit.collider;
             }
