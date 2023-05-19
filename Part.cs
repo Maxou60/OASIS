@@ -52,10 +52,13 @@ namespace OASIS
 
                 if (value == -1)
                 {
-                    for (var i = 0; i < bolts.Length; i++)
+                    if (bolts != null)
                     {
-                        bolts[i].gameObject.SetActive(false);
-                        bolts[i].tightness = 0;
+                        for (var i = 0; i < bolts.Length; i++)
+                        {
+                            bolts[i].gameObject.SetActive(false);
+                            bolts[i].tightness = 0;
+                        }
                     }
 
                     transform.SetParent(null);
@@ -69,7 +72,10 @@ namespace OASIS
                 }
                 else
                 {
-                    for (var i = 0; i < bolts.Length; i++) bolts[i].gameObject.SetActive(true);
+                    if (bolts != null)
+                    {
+                        for (var i = 0; i < bolts.Length; i++) bolts[i].gameObject.SetActive(true);
+                    }
 
                     transform.SetParent(triggers[value].transform);
                     transform.localPosition = Vector3.zero;
