@@ -155,6 +155,8 @@ namespace OASIS
 
         public void OnTriggerEnter(Collider other)
         {
+            if (transform.parent == null) return;
+
             var i = Array.IndexOf(triggers, other);
             if (i != -1) triggerIndex = i;
         }
