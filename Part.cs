@@ -118,7 +118,7 @@ namespace OASIS
 
         public override void mouseOver()
         {
-            if (attachedTo == -1 || (canDetach != null && !canDetach.Invoke())) return;
+            if (attachedTo == -1) return;
             if (bolts != null)
             {
                 for (var i = 0; i < bolts.Length; i++)
@@ -130,6 +130,7 @@ namespace OASIS
                     }
                 }
             }
+            if (canDetach != null && !canDetach.Invoke()) return;
 
             if (Input.GetMouseButtonDown(1))
             {
